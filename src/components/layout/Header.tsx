@@ -1,101 +1,79 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const Header: React.FC = () => {
-  return (
-    <header className="main-header header-style-three">
-      {/* Header Top */}
-      <div className="header-top">
-        <div className="auto-container">
-          <div className="inner-container clearfix">
-            {/* Top Left */}
-            <div className="top-left clearfix">
-              <div className="text">
-                <span>Working time:</span> Monday to Friday 9 AM - 5 PM
-              </div>
-            </div>
-            
-            {/* Top Right */}
-            <div className="top-right pull-right clearfix">
-              {/* Social Box */}
-              <ul className="social-box">
-                <li><a href="https://www.facebook.com/" className="fa fa-facebook-f"></a></li>
-                <li><a href="https://www.twitter.com/" className="fa fa-twitter"></a></li>
-                <li><a href="https://www.behance.com/" className="fa fa-behance"></a></li>
-                <li><a href="https://www.linkedin.com/" className="fa fa-linkedin"></a></li>
-                <li><a href="https://youtube.com/" className="fa fa-youtube-play"></a></li>
-              </ul>
-              <div className="text">Call: <a href="tel:+919994156390">9994156390</a></div>
-            </div>
-          </div>
-        </div>
-      </div>
+interface MenuItem {
+  title: string;
+  path: string;
+  children?: MenuItem[];
+}
 
-      {/* Header Lower */}
-      <div className="header-lower">
-        <div className="auto-container clearfix">
-          {/* Logo Box */}
-          <div className="pull-left logo-box">
-            <div className="logo">
+const menuItems: MenuItem[] = [
+  { title: 'Home', path: '/' },
+  { title: 'About', path: '/about' },
+  { 
+    title: 'Services', 
+    path: '/services',
+    children: [
+      { title: 'Education', path: '/services/education' },
+      { title: 'Online Learning', path: '/services/online-learning' },
+      { title: 'Career Guidance', path: '/services/career-guidance' }
+    ]
+  },
+  { title: 'Courses', path: '/courses' },
+  { title: 'Blog', path: '/blog' },
+  { title: 'Contact', path: '/contact' }
+];
+
+const Header: React.FC = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  return (
+    <header className="main-header">
+      <div className="header-upper">
+        <div className="container">
+          <div className="header-inner">
+            <div className="logo-box">
               <Link to="/">
-                <img src="/assets/images/logo.png" alt="JKKN Logo" title="JKKN" />
+                <img src="/assets/images/logo.png" alt="JKKN Matric" />
               </Link>
             </div>
+            <div className="nav-outer clearfix">
+              <div className="mobile-menu-toggler" onClick={toggleMenu}>
+                <span className="icon-bar"></span>
+                <span className="icon-bar"></span>
+                <span className="icon-bar"></span>
+              </div>
+              <nav className="main-menu navbar-expand-md navbar-light">
+                <div className={`collapse navbar-collapse show clearfix ${isMenuOpen ? 'show' : ''}`}>
+                  <ul className="navigation clearfix">
+                    {menuItems.map((item, index) => (
+                      <li key={index} className={item.children ? 'dropdown' : ''}>
+                        <Link to={item.path}>{item.title}</Link>
+                        {item.children && (
+                          <ul>
+                            {item.children.map((child, childIndex) => (
+                              <li key={childIndex}>
+                                <Link to={child.path}>{child.title}</Link>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </nav>
+              <div className="outer-box">
+                <Link to="/contact" className="theme-btn btn-style-one">
+                  <span className="txt">Get Started</span>
+                </Link>
+              </div>
+            </div>
           </div>
-
-          {/* Navigation */}
-          <nav className="main-menu navbar-expand-md">
-            <div className="navbar-header">
-              <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-              </button>
-            </div>
-
-            <div className="navbar-collapse collapse clearfix" id="navbarSupportedContent">
-              <ul className="navigation clearfix">
-                <li className="current"><Link to="/">Home</Link></li>
-                <li className="dropdown">
-                  <Link to="/about">About</Link>
-                  <ul>
-                    <li><Link to="/about">About us</Link></li>
-                    <li><Link to="/faq">Faq's</Link></li>
-                    <li><Link to="/price">Price</Link></li>
-                    <li className="dropdown">
-                      <Link to="/team">Our Team</Link>
-                      <ul>
-                        <li><Link to="/team">Team</Link></li>
-                        <li><Link to="/team-detail">Team Detail</Link></li>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-                <li className="dropdown">
-                  <Link to="/services">Services</Link>
-                  <ul>
-                    <li><Link to="/services">Services</Link></li>
-                    <li><Link to="/service-detail">Services Detail</Link></li>
-                  </ul>
-                </li>
-                <li className="dropdown">
-                  <Link to="/courses">Courses</Link>
-                  <ul>
-                    <li><Link to="/courses">Courses</Link></li>
-                    <li><Link to="/course-detail">Courses Detail</Link></li>
-                  </ul>
-                </li>
-                <li className="dropdown">
-                  <Link to="/blog">Blog</Link>
-                  <ul>
-                    <li><Link to="/blog">Our Blog</Link></li>
-                    <li><Link to="/blog-detail">Blog Detail</Link></li>
-                  </ul>
-                </li>
-                <li><Link to="/contact">Contact</Link></li>
-              </ul>
-            </div>
-          </nav>
         </div>
       </div>
     </header>

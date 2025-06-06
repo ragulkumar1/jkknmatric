@@ -1,73 +1,55 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-interface ServiceBlockProps {
+interface Service {
   icon: string;
   title: string;
   description: string;
   link: string;
 }
 
-const ServiceBlock: React.FC<ServiceBlockProps> = ({ icon, title, description, link }) => (
-  <div className="service-block-two col-lg-3 col-md-6 col-sm-12">
-    <div className="inner-box">
-      <div className="upper-box">
-        <div className="icon-box transition-500ms">
-          <img src={icon} alt={title} />
-        </div>
-        <h5><Link to={link}>{title}</Link></h5>
-        <div className="text">{description}</div>
-      </div>
-      <Link to={link} className="read-more">
-        Read More <span className="flaticon-right-arrow-1"></span>
-      </Link>
-    </div>
-  </div>
-);
+const services: Service[] = [
+  {
+    icon: 'flaticon-education',
+    title: 'Quality Education',
+    description: 'We provide high-quality education with modern teaching methods and experienced faculty.',
+    link: '/services/education'
+  },
+  {
+    icon: 'flaticon-online-learning',
+    title: 'Online Learning',
+    description: 'Access our comprehensive online learning platform with interactive content and resources.',
+    link: '/services/online-learning'
+  },
+  {
+    icon: 'flaticon-graduation-cap',
+    title: 'Career Guidance',
+    description: 'Expert guidance for career planning and higher education opportunities.',
+    link: '/services/career-guidance'
+  }
+];
 
 const ServicesSection: React.FC = () => {
-  const services = [
-    {
-      icon: '/assets/images/resource/service-icon-1.jpg',
-      title: 'Coaching',
-      description: 'Magnetized strongly enough pre vending domain overeus all initial results to estimate.',
-      link: '/service-detail'
-    },
-    {
-      icon: '/assets/images/resource/service-icon-2.jpg',
-      title: 'Consultation',
-      description: 'Magnetized strongly enough pre vending domain overeus all initial results to estimate.',
-      link: '/service-detail'
-    },
-    {
-      icon: '/assets/images/resource/service-icon-3.jpg',
-      title: 'Self Development',
-      description: 'Magnetized strongly enough pre vending domain overeus all initial results to estimate.',
-      link: '/service-detail'
-    },
-    {
-      icon: '/assets/images/resource/service-icon-4.jpg',
-      title: 'Life Programs',
-      description: 'Magnetized strongly enough pre vending domain overeus all initial results to estimate.',
-      link: '/service-detail'
-    }
-  ];
-
   return (
-    <section className="services-section-two">
-      <div className="auto-container">
-        <div className="inner-container">
-          <div className="row clearfix">
-            {services.map((service, index) => (
-              <ServiceBlock
-                key={index}
-                icon={service.icon}
-                title={service.title}
-                description={service.description}
-                link={service.link}
-              />
-            ))}
-          </div>
+    <section className="services-section">
+      <div className="container">
+        <div className="row">
+          {services.map((service, index) => (
+            <div key={index} className="col-lg-4 col-md-6">
+              <div className="service-card">
+                <div className="icon-box">
+                  <i className={service.icon}></i>
+                </div>
+                <h3 className="title">
+                  <Link to={service.link}>{service.title}</Link>
+                </h3>
+                <p className="description">{service.description}</p>
+                <Link to={service.link} className="read-more">
+                  Learn More <i className="fas fa-arrow-right"></i>
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
